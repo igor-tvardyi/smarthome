@@ -1,0 +1,19 @@
+jms_serializer:
+    handlers:
+        datetime:
+            default_format: "Y-m-d H:i"
+    visitors:
+        xml:
+            format_output: '%kernel.debug%'
+#    metadata:
+#        auto_detection: false
+#        directories:
+#            KnpPaginatorBundle:
+#                namespace_prefix: Knp\Bundle\PaginatorBundle
+#                path: "@MainBundle/Resources/config/serializer/KnpPaginatorBundle"
+#            KnpPager:
+#                namespace_prefix: Knp\Component\Pager
+#                path: "@MainBundle/Resources/config/serializer/KnpPager"
+#            MainBundle:
+#                namespace_prefix: "MainBundle"
+#                path: "@MainBundle/Resources/config/serializer"
