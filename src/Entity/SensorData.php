@@ -3,11 +3,13 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\SensorDataRepository")
+ * @ORM\HasLifecycleCallbacks()
  * @Serializer\ExclusionPolicy("all")
  */
 class SensorData
@@ -23,6 +25,7 @@ class SensorData
      * @var int
      * @ORM\Column(name="t", type="smallint")
      * @Assert\NotNull()
+     * @Serializer\Expose()
      */
     protected $temperature;
 
@@ -30,19 +33,30 @@ class SensorData
      * @var int
      * @ORM\Column(name="h", type="smallint")
      * @Assert\NotNull()
+     * @Serializer\Expose()
      */
     protected $humidity;
 
     /**
      * @var int
-     * @ORM\Column(name="b", type="smallint", nullable=true)
+     * @ORM\Column(name="p", type="integer", nullable=true)
+     * @Serializer\Expose()
      */
     protected $pressure;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created_at", type="datetime")
+     * @ORM\Version()
+     */
+    protected $createdAt;
 
     /**
      * @var Sensor
      * @ORM\ManyToOne(targetEntity="App\Entity\Sensor")
      * @ORM\JoinColumn(name="sensor_id", onDelete="CASCADE")
+     * @Serializer\Expose()
      */
     protected $sensor;
 
@@ -121,5 +135,13 @@ class SensorData
     {
         $this->sensor = $sensor;
         return $this;
+    }
+
+    /**
+     * @ORM\PrePersist()
+     */
+    public function onCreatedAt()
+    {
+        $this->createdAt = new \DateTime();
     }
 }
